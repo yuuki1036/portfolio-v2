@@ -13,7 +13,10 @@ const config = defineConfig({
     "*": "vp check --fix",
   },
   fmt: {},
-  lint: { options: { typeAware: true, typeCheck: true } },
+  lint: {
+    ignorePatterns: ["src/routeTree.gen.ts"],
+    options: { typeAware: true, typeCheck: true },
+  },
   plugins: [
     devtools(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
