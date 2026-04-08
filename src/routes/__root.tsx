@@ -3,6 +3,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import { getLocale } from "../paraglide/runtime.js";
 
 import appCss from "../styles.css?url";
 
@@ -33,8 +34,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const locale = getLocale();
   return (
-    <html lang="ja" className="dark">
+    <html lang={locale} className="dark">
       <head>
         <HeadContent />
       </head>
