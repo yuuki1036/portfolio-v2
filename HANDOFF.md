@@ -9,16 +9,23 @@
 
 ## 決定事項
 
-| 項目                 | 内容                                                   |
-| -------------------- | ------------------------------------------------------ |
-| repo 名              | `portfolio-v2`                                         |
-| ローカルパス         | `~/Projects/portfolio-v2/`                             |
-| GitHub push          | 後で（**public** repo として作成予定）                 |
-| フレームワーク       | TanStack Start (React 19, Vite 7, Tailwind v4, nitro)  |
-| ツールチェーン       | **Vite+ (`vp`)** ─ Oxlint/Oxfmt/Vitest 4/Rolldown 統合 |
-| パッケージマネージャ | pnpm 10 (Vite+ がラップ)                               |
-| デザイン             | mock あり（場所未確認）                                |
-| 旧 repo の扱い       | 本番稼働継続・`main` は触らない                        |
+| 項目                 | 内容                                                                |
+| -------------------- | ------------------------------------------------------------------- |
+| repo 名              | `portfolio-v2`                                                      |
+| ローカルパス         | `~/Projects/portfolio-v2/`                                          |
+| GitHub push          | 後で（**public** repo として作成予定）                              |
+| フレームワーク       | TanStack Start (React 19, Vite 7, Tailwind v4, nitro)               |
+| ツールチェーン       | **Vite+ (`vp`)** ─ Oxlint/Oxfmt/Vitest 4/Rolldown 統合              |
+| パッケージマネージャ | pnpm 10 (Vite+ がラップ)                                            |
+| Animation            | Framer Motion                                                       |
+| i18n                 | **paraglide-js** (next-intl は Next 専用なので NG)                  |
+| Form                 | TanStack Form + Resend                                              |
+| Blog/MDX             | Velite or Contentlayer v2 (要選定)                                  |
+| OGP                  | Cloudflare Workers + satori 想定 (要設計)                           |
+| **Deploy**           | **Cloudflare Pages**（旧 HANDOFF の Vercel から変更）               |
+| デザイン             | mock 確認済み (`.claude/from-claude-mock/`、warm dark × amber gold) |
+| ドメイン             | `yuuki1036.com` 切替予定                                            |
+| 旧 repo の扱い       | 本番稼働継続・`main` は触らない                                     |
 
 ## 現在の状態
 
@@ -27,10 +34,16 @@
 - [x] TanStack Start プロジェクト初期化（`create-start-app` + `tanstack-query` add-on）
 - [x] **Vite+ 採用 + `vp migrate` 実行** ─ scripts を `vp dev/build/test/check` に切替済み
 - [x] 初回コミット (`59ff560`)
-- [ ] indie プロジェクト初期化（slug: `portfolio-v2`）
-- [ ] mock の場所確認
-- [ ] 持ち越し資産のコピー
-- [ ] Issue 起票
+- [x] indie プロジェクト初期化（`.claude/indie/portfolio-v2/`、ローカル専用）
+- [x] `.claude/` 全体を gitignore に追加（indie ファイルもローカル管理に統一）
+- [x] mock 確認 (`.claude/from-claude-mock/`) ＋ knowledge への永続化
+- [x] `routeTree.gen.ts` を fmt/lint 除外
+- [ ] **branding 決定**（yuuki1036 / 屋号 / 本名）─ 全コンテンツに影響、最優先
+- [ ] paraglide-js セットアップ
+- [ ] デザイントークン投入（Tailwind v4 + フォント）
+- [ ] mock HTML をコンポーネント分解
+- [ ] 持ち越し資産のコピー（旧 repo の Works データ・画像・i18n 文字列）
+- [ ] Issue 起票（次セッションで `/indie-issue-create` 開始）
 
 ## 既知の課題 / Follow-up
 
@@ -39,21 +52,20 @@
 
 ## 次の手順
 
-### 1. indie プロジェクト init
+### 1. branding 決定
 
-`/indie-init` を実行。slug は `portfolio-v2`。
+yuuki1036 / 屋号 / 本名 のどれで打ち出すか決める。全コンテンツ（Hero, About, OG, ロゴ）に影響するため、Issue 起票より先に確定したい。
 
-### 2. mock 確認
+### 2. Issue 起票（想定スコープ）
 
-ユーザーに mock の場所を聞く（Figma URL or ローカルパス）。
+> 旧 HANDOFF の想定から **service 削除・blog 追加・deploy を CF Pages に変更** している。
 
-### 3. Issue 起票（想定スコープ）
-
-- `PORTFOLIO-V2-1`: TanStack Start プロジェクト初期セットアップ（routing, Tailwind, i18n 基盤）
-- `PORTFOLIO-V2-2`: デザインシステム構築（mock ベース）
-- `PORTFOLIO-V2-3`: ページ移植（home, about, works, service, contact）
-- `PORTFOLIO-V2-4`: サーバー関数移植（sendMail, recaptcha, og 画像生成）
-- `PORTFOLIO-V2-5`: Vercel デプロイ・ドメイン切替
+- `PORTFOLIO-V2-1`: TanStack Start 初期セットアップ（routing, Tailwind v4, paraglide-js, Framer Motion）
+- `PORTFOLIO-V2-2`: デザインシステム構築（mock の token・コンポーネント分解）
+- `PORTFOLIO-V2-3`: ページ実装（home / works / works/[slug] / about / blog / blog/[slug] / contact）
+- `PORTFOLIO-V2-4`: Blog 環境（Velite or Contentlayer v2 + MDX）
+- `PORTFOLIO-V2-5`: サーバー機能（TanStack Form + Resend, reCAPTCHA, 動的 OG, レート制限）
+- `PORTFOLIO-V2-6`: **Cloudflare Pages** デプロイ・ドメイン切替・CSP nonce 移植
 
 ## 旧 repo から持ち越す資産
 
