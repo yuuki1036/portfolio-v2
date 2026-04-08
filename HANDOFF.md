@@ -18,7 +18,8 @@
 | ツールチェーン       | **Vite+ (`vp`)** ─ Oxlint/Oxfmt/Vitest 4/Rolldown 統合              |
 | パッケージマネージャ | pnpm 10 (Vite+ がラップ)                                            |
 | Animation            | Framer Motion                                                       |
-| i18n                 | **paraglide-js** (next-intl は Next 専用なので NG)                  |
+| i18n                 | **paraglide-js** ─ TanStack Start 公式 example あり、compile-time   |
+| **branding 名前**    | **`yuuki1036`** 維持（屋号・本名は採用しない）                      |
 | Form                 | TanStack Form + Resend                                              |
 | Blog/MDX             | Velite or Contentlayer v2 (要選定)                                  |
 | OGP                  | Cloudflare Workers + satori 想定 (要設計)                           |
@@ -38,7 +39,8 @@
 - [x] `.claude/` 全体を gitignore に追加（indie ファイルもローカル管理に統一）
 - [x] mock 確認 (`.claude/from-claude-mock/`) ＋ knowledge への永続化
 - [x] `routeTree.gen.ts` を fmt/lint 除外
-- [ ] **branding 決定**（yuuki1036 / 屋号 / 本名）─ 全コンテンツに影響、最優先
+- [x] **branding 決定** ─ `yuuki1036` 維持で確定
+- [x] **i18n 方針確定** ─ paraglide-js（TanStack Start 公式 example あり）
 - [ ] paraglide-js セットアップ
 - [ ] デザイントークン投入（Tailwind v4 + フォント）
 - [ ] mock HTML をコンポーネント分解
@@ -52,13 +54,11 @@
 
 ## 次の手順
 
-### 1. branding 決定
-
-yuuki1036 / 屋号 / 本名 のどれで打ち出すか決める。全コンテンツ（Hero, About, OG, ロゴ）に影響するため、Issue 起票より先に確定したい。
-
-### 2. Issue 起票（想定スコープ）
+### Issue 起票（想定スコープ）
 
 > 旧 HANDOFF の想定から **service 削除・blog 追加・deploy を CF Pages に変更** している。
+
+各 Issue の `branding`/`i18n` 前提は上記 [決定事項](#決定事項) を参照。
 
 - `PFV2-1`: TanStack Start 初期セットアップ（routing, Tailwind v4, paraglide-js, Framer Motion）
 - `PFV2-2`: デザインシステム構築（mock の token・コンポーネント分解）
