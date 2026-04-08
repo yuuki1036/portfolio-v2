@@ -13,3 +13,6 @@ __unconfig*
 todos.json
 .claude
 src/paraglide
+playwright-report
+test-results
+blob-report
