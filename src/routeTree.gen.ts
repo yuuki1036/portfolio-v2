@@ -9,9 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorksRouteImport } from './routes/works'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorksIndexRouteImport } from './routes/works.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as WorksSlugRouteImport } from './routes/works.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const WorksRoute = WorksRouteImport.update({
+  id: '/works',
+  path: '/works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -22,35 +44,124 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorksIndexRoute = WorksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WorksRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
+const WorksSlugRoute = WorksSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => WorksRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/works': typeof WorksRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
+  '/works/$slug': typeof WorksSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/works/': typeof WorksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/works/$slug': typeof WorksSlugRoute
+  '/blog': typeof BlogIndexRoute
+  '/works': typeof WorksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/works': typeof WorksRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
+  '/works/$slug': typeof WorksSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/works/': typeof WorksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/works'
+    | '/blog/$slug'
+    | '/works/$slug'
+    | '/blog/'
+    | '/works/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/blog/$slug'
+    | '/works/$slug'
+    | '/blog'
+    | '/works'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/works'
+    | '/blog/$slug'
+    | '/works/$slug'
+    | '/blog/'
+    | '/works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRouteWithChildren
+  ContactRoute: typeof ContactRoute
+  WorksRoute: typeof WorksRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/works': {
+      id: '/works'
+      path: '/works'
+      fullPath: '/works'
+      preLoaderRoute: typeof WorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -65,12 +176,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/works/': {
+      id: '/works/'
+      path: '/'
+      fullPath: '/works/'
+      preLoaderRoute: typeof WorksIndexRouteImport
+      parentRoute: typeof WorksRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/works/$slug': {
+      id: '/works/$slug'
+      path: '/$slug'
+      fullPath: '/works/$slug'
+      preLoaderRoute: typeof WorksSlugRouteImport
+      parentRoute: typeof WorksRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
+interface WorksRouteChildren {
+  WorksSlugRoute: typeof WorksSlugRoute
+  WorksIndexRoute: typeof WorksIndexRoute
+}
+
+const WorksRouteChildren: WorksRouteChildren = {
+  WorksSlugRoute: WorksSlugRoute,
+  WorksIndexRoute: WorksIndexRoute,
+}
+
+const WorksRouteWithChildren = WorksRoute._addFileChildren(WorksRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BlogRoute: BlogRouteWithChildren,
+  ContactRoute: ContactRoute,
+  WorksRoute: WorksRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

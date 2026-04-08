@@ -13,6 +13,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
+    "@inlang/paraglide-js": "^2.15.2",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",
@@ -22,6 +23,7 @@
     "@tanstack/react-router-ssr-query": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "^1.132.0",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^0.545.0",
     "nitro": "npm:nitro-nightly@latest",
     "react": "^19.2.0",
