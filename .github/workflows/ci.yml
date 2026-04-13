@@ -25,6 +25,9 @@ jobs:
         with:
           cache: true
 
+      - name: Generate paraglide i18n
+        run: npx @inlang/paraglide-js compile --outdir ./src/paraglide
+
       - name: Lint, format & type check
         run: vp check
 
@@ -52,6 +55,9 @@ jobs:
         uses: voidzero-dev/setup-vp@v1
         with:
           cache: true
+
+      - name: Generate paraglide i18n
+        run: npx @inlang/paraglide-js compile --outdir ./src/paraglide
 
       - name: Unit tests
         run: vp test run
