@@ -5,6 +5,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import { getLocale } from "../paraglide/runtime.js";
 
+import { Layout } from "../components/layout/layout";
 import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
@@ -41,7 +42,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="bg-bg text-text font-sans antialiased">
-        {children}
+        <Layout>{children}</Layout>
         <TanStackDevtools
           config={{ position: "bottom-right" }}
           plugins={[

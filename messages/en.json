@@ -1,4 +1,13 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "hello": "Hello"
+  "hello": "Hello",
+  "nav_works": "Works",
+  "nav_about": "About",
+  "nav_contact": "Contact",
+  "nav_aria_label": "Site navigation",
+  "nav_lang_switch_label": "Language switcher",
+  "footer_copyright": "© {year} yuuki1036. All rights reserved.",
+  "footer_github_label": "GitHub profile",
+  "footer_zenn_label": "Zenn profile",
+  "footer_x_label": "X profile"
 }
