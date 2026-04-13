@@ -33,10 +33,7 @@ export function Nav() {
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between">
         {/* Logo */}
-        <Link
-          to="/"
-          className="font-display text-xl font-bold tracking-tight text-text"
-        >
+        <Link to="/" className="font-display text-xl font-bold tracking-tight text-text">
           yuuki<span className="text-accent">.</span>
         </Link>
 

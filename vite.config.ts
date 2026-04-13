@@ -18,6 +18,9 @@ const config = defineConfig({
     ignorePatterns: ["src/routeTree.gen.ts", "src/paraglide/**"],
     options: { typeAware: true, typeCheck: true },
   },
+  test: {
+    exclude: ["**/node_modules/**", "**/dist/**", "tests/e2e/**"],
+  },
   plugins: [
     devtools(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
