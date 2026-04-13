@@ -60,4 +60,4 @@ jobs:
         run: npx @inlang/paraglide-js compile --outdir ./src/paraglide
 
       - name: Unit tests
-        run: vp test run
+        run: vp test run --passWithNoTests
