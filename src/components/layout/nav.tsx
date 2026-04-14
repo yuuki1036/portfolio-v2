@@ -18,7 +18,7 @@ export function Nav() {
 
   const handleLocaleChange = (locale: Locale) => {
     if (locale !== currentLocale) {
-      setLocale(locale);
+      void setLocale(locale);
     }
   };
 
