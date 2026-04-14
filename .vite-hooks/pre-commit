@@ -1,1 +1,6 @@
-vp staged
+# Use the globally installed Vite+ binary (~/.vite-plus/bin/vp), which is a
+# native Mach-O executable with built-in TypeScript loader. The local
+# node_modules/.bin/vp is a shell script that shells out to node, which
+# can't load vite.config.ts in the hook's minimal shell environment.
+# See: backlog.md "Tooling Follow-up" (pre-commit hook の `vp staged` 問題)
+"$HOME/.vite-plus/bin/vp" staged
