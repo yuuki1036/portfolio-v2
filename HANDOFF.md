@@ -49,7 +49,7 @@
 
 ## 既知の課題 / Follow-up
 
-- **pre-commit hook が `git commit` 経由で失敗**: `.vite-hooks/pre-commit` (`vp staged`) を git が起動するとき、`vite.config.ts` の loader 解決でコケる (`ERR_UNKNOWN_FILE_EXTENSION`)。直接実行や `sh .vite-hooks/pre-commit` だと成功するため、git hook 環境固有の問題と推定（vp 0.1.16 の若さも一因）。当面は手動 `vp check` 後に `--no-verify` で運用 or hook 内で `~/.vite-plus/env` を明示 source する案を検討。
+- ~~**pre-commit hook が `git commit` 経由で失敗**~~ → PFV2-13 で対応（Node 22.22.2 へ pin。`ERR_UNKNOWN_FILE_EXTENSION` は Node native TS loader 未搭載が原因だった）
 - ~~**`vite-tsconfig-paths` プラグイン削除**~~ → PFV2-12 で対応（`resolve.tsconfigPaths: true` へ置換済み）
 
 ## 次の手順
