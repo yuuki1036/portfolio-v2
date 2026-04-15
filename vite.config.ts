@@ -1,6 +1,5 @@
 import { defineConfig } from "vite-plus";
 import { devtools } from "@tanstack/devtools-vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
@@ -21,10 +20,12 @@ const config = defineConfig({
   test: {
     exclude: ["**/node_modules/**", "**/dist/**", "tests/e2e/**"],
   },
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     devtools(),
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
-    tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
     paraglideVitePlugin({
       project: "./project.inlang",
