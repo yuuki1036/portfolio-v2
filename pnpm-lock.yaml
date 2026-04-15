@@ -100,6 +100,12 @@ importers:
       storybook:
         specifier: ^10.3.5
         version: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      storybook-addon-tanstack-router:
+        specifier: ^0.1.0
+        version: 0.1.0(@storybook/react@10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3))(@tanstack/react-router@1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      storybook-addon-tanstack-start:
+        specifier: ^0.2.1
+        version: 0.2.1(@storybook/react@10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3))(@tanstack/react-router@1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@voidzero-dev/vite-plus-core@0.1.16(@types/node@22.19.17)(jiti@2.6.1)(tsx@4.21.0)(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -2706,6 +2712,23 @@ packages:
 
   std-env@4.0.0:
     resolution: {integrity: sha512-zUMPtQ/HBY3/50VbpkupYHbRroTRZJPRLvreamgErJVys0ceuzMkD44J/QjqhHjOzK42GQ3QZIeFG1OYfOtKqQ==}
+
+  storybook-addon-tanstack-router@0.1.0:
+    resolution: {integrity: sha512-CSOyacE8WYSEyv1riss7+qLViRGNf/ka9oHp6pmgCsa4LulFlST3JjfOFoxBVC8vymagKqR6YMyFyTPDYdoKdw==}
+    peerDependencies:
+      '@storybook/react': '>=8.0.0'
+      '@tanstack/react-router': '>=1.0.0'
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+
+  storybook-addon-tanstack-start@0.2.1:
+    resolution: {integrity: sha512-P24+QdDHAuEb9SuskbCmQQzbkwrKiKh1xbgSlDa5lb4Dw6QWjJI5/f4EjTiFpOmZUdkh9SkinOBFhWpWO9kUuA==}
+    peerDependencies:
+      '@storybook/react': '>=8.0.0'
+      '@tanstack/react-router': '>=1.0.0'
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+      vite: '>=5.0.0'
 
   storybook@10.3.5:
     resolution: {integrity: sha512-uBSZu/GZa9aEIW3QMGvdQPMZWhGxSe4dyRWU8B3/Vd47Gy/XLC7tsBxRr13txmmPOEDHZR94uLuq0H50fvuqBw==}
@@ -5373,6 +5396,22 @@ snapshots:
   srvx@0.11.15: {}
 
   std-env@4.0.0: {}
+
+  storybook-addon-tanstack-router@0.1.0(@storybook/react@10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3))(@tanstack/react-router@1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      '@storybook/react': 10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3)
+      '@tanstack/react-router': 1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
+  storybook-addon-tanstack-start@0.2.1(@storybook/react@10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3))(@tanstack/react-router@1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@voidzero-dev/vite-plus-core@0.1.16(@types/node@22.19.17)(jiti@2.6.1)(tsx@4.21.0)(typescript@5.9.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      '@storybook/react': 10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3)
+      '@tanstack/react-router': 1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      storybook-addon-tanstack-router: 0.1.0(@storybook/react@10.3.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3))(@tanstack/react-router@1.168.19(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      vite: '@voidzero-dev/vite-plus-core@0.1.16(@types/node@22.19.17)(jiti@2.6.1)(tsx@4.21.0)(typescript@5.9.3)'
 
   storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
