@@ -11,6 +11,8 @@
   --color-border: #222220;
   --color-border2: #2e2e29;
   --color-accent: #c8a25a;
+  --color-accent-lo: rgba(200, 162, 90, 0.08);
+  --color-accent-mid: rgba(200, 162, 90, 0.18);
   --color-text: #e0dbd0;
   --color-sub: #9c9789;
   --color-muted: #55534d;
