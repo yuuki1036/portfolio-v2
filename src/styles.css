@@ -45,3 +45,101 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* ---------- Interactions ---------- */
+
+/* Glitch effect (mock portfolio-mock.html 由来) */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: #f05;
+  clip-path: polygon(0 0, 100% 0, 100% 42%, 0 42%);
+}
+.glitch::after {
+  color: #0cf;
+  clip-path: polygon(0 58%, 100% 58%, 100% 100%, 0 100%);
+}
+.glitch.on::before {
+  animation: gb 0.18s steps(2) forwards;
+}
+.glitch.on::after {
+  animation: gt 0.18s steps(2) forwards;
+}
+
+@keyframes gb {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  33% {
+    transform: translateX(-5px);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateX(5px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+@keyframes gt {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  33% {
+    transform: translateX(5px);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateX(-5px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+/* Typewriter caret */
+.tw-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  background: var(--color-accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Scroll reveal */
+.rv {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rv.vis {
+  opacity: 1;
+  transform: none;
+}
