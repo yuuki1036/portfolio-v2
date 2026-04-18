@@ -3,7 +3,6 @@ import { Typewriter } from "./typewriter";
 
 const DEFAULT_ROLES = [
   "TypeScript Engineer_",
-  "Frontend Tech Lead_",
   "React Specialist_",
   "UI/UX Craftsman_",
   "TanStack Enthusiast_",

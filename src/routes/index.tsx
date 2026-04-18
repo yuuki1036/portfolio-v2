@@ -16,7 +16,6 @@ export const Route = createFileRoute("/")({ component: Home });
 
 const ROLES = [
   "TypeScript Engineer_",
-  "Frontend Tech Lead_",
   "React Specialist_",
   "UI/UX Craftsman_",
   "TanStack Enthusiast_",
@@ -33,17 +32,14 @@ function Home() {
         <div className="hero-glow" aria-hidden="true" />
 
         <p className="hero-eyebrow mb-9 font-mono text-[11px] uppercase tracking-[0.28em] text-muted">
-          Frontend Tech Lead × 6 years
+          Software Engineer × 6 years
         </p>
 
-        <h1 className="mb-1 font-display text-[clamp(76px,11.5vw,156px)] font-extrabold leading-[0.9] tracking-[-0.035em] text-text">
+        <h1 className="mb-1 font-display text-[clamp(76px,11.5vw,156px)] font-extrabold leading-[0.9] tracking-[-0.03em] text-text">
           <span className="name-line">
             <span>
-              <Glitch>YUKI</Glitch>
+              <Glitch>yuuki1036</Glitch>
             </span>
-          </span>
-          <span className="name-line">
-            <span>MIYASHITA</span>
           </span>
         </h1>
 
