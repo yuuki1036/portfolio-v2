@@ -1,16 +1,7 @@
 /**
- * Works のデータ。Home の Works ハイライト（先頭 3 件）と後続 `/works` 一覧で共用予定。
- * 詳細ページ（`/works/[slug]`）の slug 設計は別 Issue。Home からは全件 `/works` 一覧へ遷移。
+ * Works のデータ。Home の Works ハイライト（全件表示）と `/works` 一覧で共用。
+ * `/works/[slug]` 詳細ページは別 Issue。一覧カードは `launch` or `source` への外部リンクで暫定接続。
  */
-
-export interface WorkPlaceholder {
-  /** 画像 placeholder の中央テキスト（例: "CO₂", "一言", "53ST"） */
-  text: string;
-  /** placeholder の background gradient（CSS 値そのまま） */
-  gradient: string;
-  /** placeholder のテキスト色（CSS 値そのまま） */
-  color: string;
-}
 
 export interface Work {
   /** 後続 `/works/[slug]` 用の識別子 */
@@ -20,33 +11,34 @@ export interface Work {
   title: string;
   desc: string;
   tags: readonly string[];
-  placeholder: WorkPlaceholder;
+  /** サムネ画像（`public/images/works/` 配下の絶対パス） */
+  thumbnail: string;
+  /** デモサイト URL（無い場合は省略） */
+  launch?: string;
+  /** ソースコード URL（GitHub 等） */
+  source: string;
 }
 
 export const WORKS: readonly Work[] = [
   {
-    slug: "co2-dashboard",
-    meta: "2023 — SaaS / Dashboard",
-    title: "CO₂ Emissions Dashboard",
-    desc: "CO₂排出量の可視化SaaS。複雑なサプライチェーンデータをインタラクティブなダッシュボードで直感的に表現。",
-    tags: ["TypeScript", "React", "Next.js", "Recharts"],
-    placeholder: {
-      text: "CO₂",
-      gradient: "linear-gradient(135deg,#131310 0%,#1e1e18 100%)",
-      color: "#2a2a22",
-    },
-  },
-  {
     slug: "hitokoto",
-    meta: "2022 — Personal / SNS",
+    meta: "2023 — Personal / SNS",
     title: "ひとこと",
     desc: "シンプルなつぶやきSNS。Next.js × Sanity CMS で構築した個人開発フルスタックアプリ。",
     tags: ["Next.js", "TypeScript", "Sanity"],
-    placeholder: {
-      text: "一言",
-      gradient: "linear-gradient(135deg,#131310 0%,#1e1b18 100%)",
-      color: "#2a2620",
-    },
+    thumbnail: "/images/works/hitokoto-main.png",
+    launch: "https://hitokoto-eosin.vercel.app",
+    source: "https://github.com/yuuki1036/nextjs-twitter",
+  },
+  {
+    slug: "netfjix",
+    meta: "2021 — Personal / Clone UI",
+    title: "Netfjix",
+    desc: "Next.js × TMDb API で構築した Netflix 風の映画情報 UI。",
+    tags: ["Next.js", "TypeScript", "TMDb"],
+    thumbnail: "/images/works/netfjix-main.png",
+    launch: "https://nextjs-netflix-clone-ten.vercel.app/",
+    source: "https://github.com/yuuki1036/nextjs-netflix-clone",
   },
   {
     slug: "53st",
@@ -54,10 +46,7 @@ export const WORKS: readonly Work[] = [
     title: "53ST",
     desc: "ごみ捨て支援 LINE ボット。Python + AWS Lambda で実装。収集スケジュールをLINEでリマインド。",
     tags: ["Python3", "AWS", "LINE API"],
-    placeholder: {
-      text: "53ST",
-      gradient: "linear-gradient(135deg,#131310 0%,#181e1b 100%)",
-      color: "#20281e",
-    },
+    thumbnail: "/images/works/53st-main.png",
+    source: "https://github.com/yuuki1036/trash-disposal-notification",
   },
 ];

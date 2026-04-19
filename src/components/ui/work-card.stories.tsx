@@ -35,3 +35,14 @@ export const Grid: Story = {
     </div>
   ),
 };
+
+export const ExternalLink: Story = {
+  name: "External link (href)",
+  render: () => (
+    <div className="grid grid-cols-3 gap-px border border-border bg-border">
+      {WORKS.map((work) => (
+        <WorkCard key={work.slug} work={work} href={work.launch ?? work.source} />
+      ))}
+    </div>
+  ),
+};
