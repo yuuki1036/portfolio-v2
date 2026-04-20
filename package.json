@@ -16,7 +16,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "@inlang/paraglide-js": "^2.15.2",
+    "@inlang/paraglide-js": "^2.16.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",
