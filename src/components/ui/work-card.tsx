@@ -11,11 +11,15 @@ interface WorkCardCommonProps {
 
 /**
  * `to`（内部遷移）か `href`（外部リンク）のいずれか一方を必須にする判別共用型。
- * 両方省略・両方指定を tsc で検出する。
+ * 両方省略・両方指定を tsc で検出する。dynamic route 用に `params` を任意で受ける。
  */
 type WorkCardProps =
-  | (WorkCardCommonProps & { to: LinkProps["to"]; href?: never })
-  | (WorkCardCommonProps & { href: string; to?: never });
+  | (WorkCardCommonProps & {
+      to: LinkProps["to"];
+      params?: Record<string, string>;
+      href?: never;
+    })
+  | (WorkCardCommonProps & { href: string; to?: never; params?: never });
 
 /**
  * 作品カード（mock portfolio-mock.html `.wcard` 相当）。
@@ -80,7 +84,7 @@ export function WorkCard(props: WorkCardProps) {
   }
 
   return (
-    <Link to={props.to} className={rootClass}>
+    <Link to={props.to} params={props.params as LinkProps["params"]} className={rootClass}>
       {body}
     </Link>
   );
