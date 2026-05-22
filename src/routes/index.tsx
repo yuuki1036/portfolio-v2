@@ -83,7 +83,7 @@ function Home() {
         <div className="grid grid-cols-3 gap-px border border-border bg-border">
           {WORKS.map((work, i) => (
             <Reveal key={work.slug} delay={i * 0.1} className="bg-bg">
-              <WorkCard work={work} to="/works" />
+              <WorkCard work={work} to="/works/$slug" params={{ slug: work.slug }} />
             </Reveal>
           ))}
         </div>
