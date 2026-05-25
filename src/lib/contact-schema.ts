@@ -26,8 +26,7 @@ export const contactValidationSchema = z.object({
 
 export const contactServerSchema = contactValidationSchema.extend({
   honeypot: z.string().max(0),
-  // PR3 で `min(1)` に締める。PR2 段階では空文字を許容
-  turnstileToken: z.string(),
+  turnstileToken: z.string().min(1, "contact_error_turnstile"),
 });
 
 export type ContactFormValues = z.input<typeof contactValidationSchema>;
