@@ -8,6 +8,7 @@ import { Reveal } from "#/components/ui/reveal.js";
 import { SectionHeading } from "#/components/ui/section-heading.js";
 import { contactValidationSchema, type ContactFormValues } from "#/lib/contact-schema.js";
 import * as m from "#/paraglide/messages/_index.js";
+import { sendContact } from "#/server/send-contact.js";
 
 export const Route = createFileRoute("/contact")({ component: Contact });
 
@@ -47,11 +48,12 @@ function Contact() {
     defaultValues: initialValues,
     validators: { onBlur: contactValidationSchema },
     onSubmit: async ({ value }) => {
-      // PR2 で server function 呼び出しに差し替える
-      // eslint-disable-next-line no-console
-      console.log("[contact stub] would send:", value);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setStatus("success");
+      try {
+        await sendContact({ data: value });
+        setStatus("success");
+      } catch {
+        setStatus("error");
+      }
     },
   });
 
