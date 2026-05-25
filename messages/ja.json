@@ -27,9 +27,13 @@
   "contact_error_subject_required": "件名を入力してください",
   "contact_error_message_min": "10 文字以上で入力してください",
   "contact_error_message_max": "3000 文字以内で入力してください",
+  "contact_turnstile_label": "送信前に下のチャレンジを完了してください",
   "contact_submit": "送信する",
   "contact_submitting": "送信中...",
   "contact_success_heading": "送信完了",
   "contact_success_body": "メッセージを受け取りました。3 営業日以内にご返信いたします。",
-  "contact_error_generic": "送信に失敗しました。しばらくしてからお試しください。"
+  "contact_error_generic": "送信に失敗しました。しばらくしてからお試しください。",
+  "contact_error_bot": "自動送信が検出されたため、送信を中止しました。",
+  "contact_error_rate_limited": "送信回数の上限に達しました。しばらく時間をおいてからお試しください。",
+  "contact_error_turnstile": "認証に失敗しました。ページを再読み込みしてからお試しください。"
 }

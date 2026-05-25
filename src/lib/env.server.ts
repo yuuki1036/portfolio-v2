@@ -7,13 +7,15 @@ import { z } from "zod";
  * 必ず関数として実行時に呼ぶこと。`createServerFn` の `.handler()` 内から呼べば
  * nitro Cloudflare adapter 経由で `process.env` に binding が出ている前提。
  *
- * - PR2 では Resend 用の 3 キー
- * - PR3 で `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` を追加
+ * - `TURNSTILE_SITE_KEY` は client に流す前提のため secret 扱いではない（loader 経由で UI へ）
+ * - 他は server-only
  */
 const serverEnvSchema = z.object({
   RESEND_API_KEY: z.string().min(1),
   CONTACT_TO_EMAIL: z.string().email(),
   CONTACT_FROM_EMAIL: z.string().email(),
+  TURNSTILE_SITE_KEY: z.string().min(1),
+  TURNSTILE_SECRET_KEY: z.string().min(1),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
