@@ -1,0 +1,15 @@
+# Cloudflare Workers ローカル開発用の env テンプレート。
+# 実際の値を `.dev.vars`（gitignore 済み）にコピーして使う。
+# 本番値は Cloudflare Pages dashboard の Settings > Environment variables に登録。
+
+# Resend (https://resend.com)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Contact メール送受信アドレス
+CONTACT_TO_EMAIL=you@example.com
+CONTACT_FROM_EMAIL=contact@yourdomain.com
+
+# --- 以下は PR3 で追加 ---
+# Cloudflare Turnstile (https://dash.cloudflare.com → Turnstile)
+# TURNSTILE_SITE_KEY=0x4AAAAAAAxxxxxxxxxxxx
+# TURNSTILE_SECRET_KEY=0x4AAAAAAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
