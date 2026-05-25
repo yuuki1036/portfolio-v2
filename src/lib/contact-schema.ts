@@ -25,7 +25,9 @@ export const contactValidationSchema = z.object({
 });
 
 export const contactServerSchema = contactValidationSchema.extend({
-  honeypot: z.string().max(0),
+  // honeypot は server handler 側で `!== ""` を見て i18n key 付きで弾く（schema で弾くと
+  // zod の generic エラーメッセージが返るため）
+  honeypot: z.string(),
   turnstileToken: z.string().min(1, "contact_error_turnstile"),
 });
 
