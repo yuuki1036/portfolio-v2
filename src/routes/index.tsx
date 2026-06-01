@@ -48,7 +48,7 @@ function Home() {
             <span className="text-dim">—</span>
             <Typewriter
               roles={ROLES}
-              className="font-normal text-text [&>span:first-child]:inline-block [&>span:first-child]:min-w-[min(320px,80vw)]"
+              className="font-normal text-text [&>span:first-child]:inline-block"
             />
           </div>
           <p className="mt-[14px] max-w-[420px] font-sans text-[15px] font-light leading-[1.85] text-muted">
