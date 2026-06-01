@@ -1,0 +1,86 @@
+import { createServerFn } from "@tanstack/react-start";
+import { getRequestIP } from "@tanstack/react-start/server";
+import { Resend } from "resend";
+import { contactServerSchema, type ContactFormValues } from "#/lib/contact-schema.js";
+import { getServerEnv } from "#/lib/env.server.js";
+import { checkRateLimit } from "#/lib/rate-limit.server.js";
+
+/**
+ * Contact フォーム送信のサーバー関数。
+ *
+ * 検証順 (失敗時は i18n key を message に持たせて throw、クライアント `catch` で
+ * `err.message` を見てエラー文言を切り替える):
+ * 1. {@link contactServerSchema} で zod 厳密検証
+ * 2. honeypot (`data.honeypot !== ""`) → `contact_error_bot`
+ * 3. rate-limit (IP 単位、60s window で 5 req まで) → `contact_error_rate_limited`
+ * 4. Cloudflare Turnstile siteverify → `contact_error_turnstile`
+ * 5. Resend `emails.send`、エラーは generic で throw
+ */
+export const sendContact = createServerFn({ method: "POST" })
+  .inputValidator(contactServerSchema)
+  .handler(async ({ data }) => {
+    if (data.honeypot !== "") {
+      throw new Error("contact_error_bot");
+    }
+
+    const env = getServerEnv();
+
+    const ip = getRequestIP({ xForwardedFor: true }) ?? "unknown";
+    const rl = checkRateLimit(`contact:${ip}`);
+    if (!rl.allowed) {
+      throw new Error("contact_error_rate_limited");
+    }
+
+    const turnstileBody = new FormData();
+    turnstileBody.append("secret", env.TURNSTILE_SECRET_KEY);
+    turnstileBody.append("response", data.turnstileToken);
+    if (ip !== "unknown") {
+      turnstileBody.append("remoteip", ip);
+    }
+    const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      body: turnstileBody,
+    });
+    const turnstileJson = (await turnstileRes.json()) as { success?: boolean };
+    if (!turnstileJson.success) {
+      throw new Error("contact_error_turnstile");
+    }
+
+    const resend = new Resend(env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: env.CONTACT_FROM_EMAIL,
+      to: env.CONTACT_TO_EMAIL,
+      replyTo: data.email,
+      subject: `[Portfolio] ${data.name}: ${data.subject}`,
+      html: renderContactHtml(data),
+      headers: { "X-Entity-Ref-ID": crypto.randomUUID() },
+    });
+
+    if (error) {
+      throw new Error(`Resend 送信失敗: ${error.message}`);
+    }
+
+    return { ok: true } as const;
+  });
+
+function renderContactHtml(data: ContactFormValues): string {
+  const safe = (value: string) =>
+    value.replace(
+      /[&<>"']/g,
+      (char) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[char] ?? char,
+    );
+
+  return [
+    `<p><strong>From:</strong> ${safe(data.name)} &lt;${safe(data.email)}&gt;</p>`,
+    `<p><strong>Subject:</strong> ${safe(data.subject)}</p>`,
+    `<hr />`,
+    `<pre style="font-family: ui-monospace, monospace; white-space: pre-wrap; line-height: 1.6;">${safe(data.message)}</pre>`,
+  ].join("\n");
+}

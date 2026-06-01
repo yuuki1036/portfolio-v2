@@ -6,12 +6,33 @@ import { Section } from "#/components/layout/section.js";
 import { Button } from "#/components/ui/button.js";
 import { Reveal } from "#/components/ui/reveal.js";
 import { SectionHeading } from "#/components/ui/section-heading.js";
+import { Turnstile } from "#/components/ui/turnstile.js";
 import { contactValidationSchema, type ContactFormValues } from "#/lib/contact-schema.js";
 import * as m from "#/paraglide/messages/_index.js";
+import { getContactConfig } from "#/server/get-contact-config.js";
+import { sendContact } from "#/server/send-contact.js";
 
-export const Route = createFileRoute("/contact")({ component: Contact });
+export const Route = createFileRoute("/contact")({
+  component: Contact,
+  loader: () => getContactConfig(),
+  head: () => ({
+    scripts: [
+      {
+        src: "https://challenges.cloudflare.com/turnstile/v0/api.js",
+        async: true,
+        defer: true,
+      },
+    ],
+  }),
+});
 
-type SubmitStatus = "idle" | "success" | "error";
+type SubmitStatus = "idle" | "success" | { kind: "error"; key: string };
+
+const submitErrorKeys = new Set([
+  "contact_error_bot",
+  "contact_error_rate_limited",
+  "contact_error_turnstile",
+]);
 
 const errorMessageMap: Record<string, () => string> = {
   contact_error_name_required: m.contact_error_name_required,
@@ -19,6 +40,10 @@ const errorMessageMap: Record<string, () => string> = {
   contact_error_subject_required: m.contact_error_subject_required,
   contact_error_message_min: m.contact_error_message_min,
   contact_error_message_max: m.contact_error_message_max,
+  contact_error_bot: m.contact_error_bot,
+  contact_error_rate_limited: m.contact_error_rate_limited,
+  contact_error_turnstile: m.contact_error_turnstile,
+  contact_error_generic: m.contact_error_generic,
 };
 
 function translateFieldError(error: unknown): string {
@@ -31,6 +56,11 @@ function translateFieldError(error: unknown): string {
   return "";
 }
 
+function classifySubmitError(err: unknown): string {
+  const message = err instanceof Error ? err.message : "";
+  return submitErrorKeys.has(message) ? message : "contact_error_generic";
+}
+
 const initialValues: ContactFormValues = {
   name: "",
   email: "",
@@ -41,19 +71,23 @@ const initialValues: ContactFormValues = {
 };
 
 function Contact() {
+  const { turnstileSiteKey } = Route.useLoaderData();
   const [status, setStatus] = useState<SubmitStatus>("idle");
 
   const form = useForm({
     defaultValues: initialValues,
     validators: { onBlur: contactValidationSchema },
     onSubmit: async ({ value }) => {
-      // PR2 で server function 呼び出しに差し替える
-      // eslint-disable-next-line no-console
-      console.log("[contact stub] would send:", value);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      setStatus("success");
+      try {
+        await sendContact({ data: value });
+        setStatus("success");
+      } catch (err) {
+        setStatus({ kind: "error", key: classifySubmitError(err) });
+      }
     },
   });
+
+  const errorKey = typeof status === "object" && status.kind === "error" ? status.key : null;
 
   return (
     <>
@@ -228,20 +262,47 @@ function Contact() {
                   )}
                 </form.Field>
 
-                {status === "error" && (
+                {/* Turnstile widget。form.Field で token を form state に同期させる。 */}
+                <form.Field name="turnstileToken">
+                  {(field) => (
+                    <div>
+                      <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.18em] text-sub">
+                        {m.contact_turnstile_label()}
+                      </p>
+                      <Turnstile
+                        siteKey={turnstileSiteKey}
+                        onVerify={(token) => field.handleChange(token)}
+                        onExpire={() => field.handleChange("")}
+                        onError={() => field.handleChange("")}
+                      />
+                    </div>
+                  )}
+                </form.Field>
+
+                {errorKey && (
                   <p
                     role="alert"
                     aria-live="polite"
                     className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#d97777]"
                   >
-                    {m.contact_error_generic()}
+                    {errorMessageMap[errorKey]?.() ?? m.contact_error_generic()}
                   </p>
                 )}
 
                 <div className="flex justify-end pt-2">
-                  <form.Subscribe selector={(state) => state.isSubmitting}>
-                    {(isSubmitting) => (
-                      <Button type="submit" variant="primary" size="md" disabled={isSubmitting}>
+                  <form.Subscribe
+                    selector={(state) => ({
+                      isSubmitting: state.isSubmitting,
+                      hasToken: state.values.turnstileToken.length > 0,
+                    })}
+                  >
+                    {({ isSubmitting, hasToken }) => (
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        size="md"
+                        disabled={isSubmitting || !hasToken}
+                      >
                         {isSubmitting ? m.contact_submitting() : m.contact_submit()}
                       </Button>
                     )}
