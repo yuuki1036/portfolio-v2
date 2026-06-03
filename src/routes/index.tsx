@@ -35,7 +35,7 @@ function Home() {
           Software Engineer × 6 years
         </p>
 
-        <h1 className="mb-1 font-display text-[clamp(76px,11.5vw,156px)] font-extrabold leading-[0.9] tracking-[-0.03em] text-text">
+        <h1 className="mb-1 font-display text-[clamp(56px,8.5vw,120px)] font-extrabold leading-[0.9] tracking-[-0.03em] text-text">
           <span className="name-line">
             <span>
               <Glitch>yuuki1036</Glitch>
@@ -48,7 +48,7 @@ function Home() {
             <span className="text-dim">—</span>
             <Typewriter
               roles={ROLES}
-              className="font-normal text-text [&>span:first-child]:inline-block [&>span:first-child]:min-w-[min(320px,80vw)]"
+              className="font-normal text-text [&>span:first-child]:inline-block"
             />
           </div>
           <p className="mt-[14px] max-w-[420px] font-sans text-[15px] font-light leading-[1.85] text-muted">
