@@ -18,6 +18,9 @@
   --color-muted: #55534d;
   --color-dim: #333330;
 
+  /* State / feedback */
+  --color-error: #d97777;
+
   /* Typography */
   --font-display: "Syne", system-ui, sans-serif;
   --font-mono: "DM Mono", ui-monospace, monospace;

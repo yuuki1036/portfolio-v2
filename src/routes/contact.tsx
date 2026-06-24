@@ -76,7 +76,8 @@ function Contact() {
 
   const form = useForm({
     defaultValues: initialValues,
-    validators: { onBlur: contactValidationSchema },
+    // onBlur で初回検証 + onChange で再検証（修正したらエラーが即消えるように）
+    validators: { onBlur: contactValidationSchema, onChange: contactValidationSchema },
     onSubmit: async ({ value }) => {
       try {
         await sendContact({ data: value });
@@ -283,13 +284,13 @@ function Contact() {
                   <p
                     role="alert"
                     aria-live="polite"
-                    className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#d97777]"
+                    className="font-mono text-[11px] uppercase tracking-[0.18em] text-error"
                   >
                     {errorMessageMap[errorKey]?.() ?? m.contact_error_generic()}
                   </p>
                 )}
 
-                <div className="flex justify-end pt-2">
+                <div className="flex justify-start pt-2">
                   <form.Subscribe
                     selector={(state) => ({
                       isSubmitting: state.isSubmitting,
@@ -318,7 +319,7 @@ function Contact() {
 }
 
 const fieldInputClass =
-  "w-full bg-transparent border border-border2 rounded-sm px-4 py-3 font-sans text-[15px] text-text placeholder:text-dim focus:outline-none focus:border-accent transition-colors duration-200 aria-[invalid=true]:border-[#d97777]";
+  "w-full bg-transparent border border-border2 rounded-sm px-4 py-3 font-sans text-[15px] text-text placeholder:text-dim focus:outline-none focus:border-accent transition-colors duration-200 aria-[invalid=true]:border-error";
 
 interface FormFieldProps {
   label: string;
@@ -342,7 +343,7 @@ function FormField({ label, name, error, children }: FormFieldProps) {
           id={`${name}-error`}
           role="alert"
           aria-live="polite"
-          className="mt-2 font-mono text-[11px] tracking-wide text-[#d97777]"
+          className="mt-2 font-mono text-[11px] tracking-wide text-error"
         >
           {error}
         </p>

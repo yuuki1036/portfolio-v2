@@ -31,9 +31,9 @@ interface TurnstileProps {
 /**
  * Cloudflare Turnstile widget の薄いラッパ。
  *
- * `__root.tsx` で `https://challenges.cloudflare.com/turnstile/v0/api.js` を
- * async ロードしている前提。script が未ロードなら `requestAnimationFrame` で
- * リトライする。callback は ref に保持して再 render を防ぐ。
+ * api.js は `/contact` route の `head()`（contact.tsx）で async ロードしている前提。
+ * script が未ロードなら `requestAnimationFrame` でリトライする。callback は ref に
+ * 保持して再 render を防ぐ。既に widget を render 済みなら二重 render しないようガードする。
  */
 export function Turnstile({ siteKey, onVerify, onExpire, onError, className }: TurnstileProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,6 +48,8 @@ export function Turnstile({ siteKey, onVerify, onExpire, onError, className }: T
 
     function tryRender() {
       if (cancelled || !container) return;
+      // 既に render 済みなら二重 render しない（rAF リトライ中の effect 再実行ガード）。
+      if (widgetIdRef.current) return;
       if (!window.turnstile) {
         requestAnimationFrame(tryRender);
         return;
@@ -65,8 +67,14 @@ export function Turnstile({ siteKey, onVerify, onExpire, onError, className }: T
     return () => {
       cancelled = true;
       const id = widgetIdRef.current;
-      if (id && window.turnstile) {
-        window.turnstile.remove(id);
+      // remove 可否に関わらず ref は必ず null 化する（次回 effect で再 render させるため）。
+      // script 未ロード等で remove できない場合はログを残す（widget が残留しうる）。
+      if (id) {
+        if (window.turnstile) {
+          window.turnstile.remove(id);
+        } else {
+          console.warn("Turnstile: cleanup 時に window.turnstile が未定義で remove をスキップ");
+        }
         widgetIdRef.current = null;
       }
     };
