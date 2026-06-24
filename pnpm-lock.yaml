@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite: npm:@voidzero-dev/vite-plus-core@0.1.24
+  vitest: npm:@voidzero-dev/vite-plus-test@0.1.24
 
 importers:
 
@@ -119,13 +119,13 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       vite:
-        specifier: npm:@voidzero-dev/vite-plus-core@latest
+        specifier: npm:@voidzero-dev/vite-plus-core@0.1.24
         version: '@voidzero-dev/vite-plus-core@0.1.24(@types/node@25.9.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)'
       vite-plus:
-        specifier: latest
+        specifier: 0.1.24
         version: 0.1.24(@types/node@25.9.1)(@voidzero-dev/vite-plus-core@0.1.24(@types/node@25.9.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3))(esbuild@0.27.7)(jiti@2.7.0)(jsdom@29.1.1)(tsx@4.21.0)(typescript@6.0.3)
       vitest:
-        specifier: npm:@voidzero-dev/vite-plus-test@latest
+        specifier: npm:@voidzero-dev/vite-plus-test@0.1.24
         version: '@voidzero-dev/vite-plus-test@0.1.24(@types/node@25.9.1)(@voidzero-dev/vite-plus-core@0.1.24(@types/node@25.9.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3))(esbuild@0.27.7)(jiti@2.7.0)(jsdom@29.1.1)(tsx@4.21.0)(typescript@6.0.3)'
 
 packages:
@@ -3362,18 +3362,6 @@ packages:
     resolution: {integrity: sha512-1to4zXBxmXHV3IiSSEInrreIlu02vUOvrhxJJH5vcxYTBDAx51cqZiKdyTxlecdKNSjj8EcxGBxNf6Vg+945gw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
-  ws@8.20.0:
-    resolution: {integrity: sha512-sAt8BhgNbzCtgGbt2OxmpuryO63ZoDk/sqaB/znQm94T4fCEsy/yV+7CdC1kJhOU9lboAEU7R3kquuycDoibVA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   ws@8.21.0:
     resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
@@ -5067,9 +5055,9 @@ snapshots:
       std-env: 4.0.0
       tinybench: 2.9.0
       tinyexec: 1.1.1
-      tinyglobby: 0.2.16
+      tinyglobby: 0.2.17
       vite: '@voidzero-dev/vite-plus-core@0.1.24(@types/node@25.9.1)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)'
-      ws: 8.20.0
+      ws: 8.21.0
     optionalDependencies:
       '@types/node': 25.9.1
       jsdom: 29.1.1
@@ -6243,8 +6231,6 @@ snapshots:
       webidl-conversions: 8.0.1
     transitivePeerDependencies:
       - '@noble/hashes'
-
-  ws@8.20.0: {}
 
   ws@8.21.0: {}
 
