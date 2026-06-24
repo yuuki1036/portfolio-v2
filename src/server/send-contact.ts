@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequestIP } from "@tanstack/react-start/server";
+import { getRequestHeaders, getRequestIP } from "@tanstack/react-start/server";
 import { Resend } from "resend";
 import { contactServerSchema, type ContactFormValues } from "#/lib/contact-schema.js";
 import { getServerEnv } from "#/lib/env.server.js";
@@ -12,9 +12,11 @@ import { checkRateLimit } from "#/lib/rate-limit.server.js";
  * `err.message` を見てエラー文言を切り替える):
  * 1. {@link contactServerSchema} で zod 厳密検証
  * 2. honeypot (`data.honeypot !== ""`) → `contact_error_bot`
- * 3. rate-limit (IP 単位、60s window で 5 req まで) → `contact_error_rate_limited`
- * 4. Cloudflare Turnstile siteverify → `contact_error_turnstile`
+ * 3. Cloudflare Turnstile siteverify → `contact_error_turnstile`
+ * 4. rate-limit (IP 単位、60s window で 5 req まで。Turnstile 成功後にカウント) → `contact_error_rate_limited`
  * 5. Resend `emails.send`、エラーは generic で throw
+ *
+ * IP は CF-Connecting-IP を優先する（X-Forwarded-For は詐称可能なため rate-limit キーに使わない）。
  */
 export const sendContact = createServerFn({ method: "POST" })
   .inputValidator(contactServerSchema)
@@ -25,11 +27,12 @@ export const sendContact = createServerFn({ method: "POST" })
 
     const env = getServerEnv();
 
-    const ip = getRequestIP({ xForwardedFor: true }) ?? "unknown";
-    const rl = checkRateLimit(`contact:${ip}`);
-    if (!rl.allowed) {
-      throw new Error("contact_error_rate_limited");
-    }
+    // 接続元 IP は Cloudflare の CF-Connecting-IP を優先（クライアントが詐称できない信頼値）。
+    // X-Forwarded-For は任意に詐称可能なため rate-limit キーには使わず fallback のみに留める。
+    // getRequestHeaders() の戻り値は既知ヘッダのみ型付けされ cf-connecting-ip を直接 index
+    // できないため Record に widen して参照する。
+    const headers = getRequestHeaders() as unknown as Record<string, string | undefined>;
+    const ip = headers["cf-connecting-ip"] ?? getRequestIP({ xForwardedFor: true }) ?? "unknown";
 
     const turnstileBody = new FormData();
     turnstileBody.append("secret", env.TURNSTILE_SECRET_KEY);
@@ -58,6 +61,13 @@ export const sendContact = createServerFn({ method: "POST" })
     }
     if (!turnstileSuccess) {
       throw new Error("contact_error_turnstile");
+    }
+
+    // rate-limit は Turnstile 成功後にカウントする。正規ユーザーが Turnstile の一時失敗で
+    // 再送しても budget を浪費しないよう、実際に送信に至る試行のみを IP 単位で制限する。
+    const rl = checkRateLimit(`contact:${ip}`);
+    if (!rl.allowed) {
+      throw new Error("contact_error_rate_limited");
     }
 
     const resend = new Resend(env.RESEND_API_KEY);
