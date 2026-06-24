@@ -37,12 +37,26 @@ export const sendContact = createServerFn({ method: "POST" })
     if (ip !== "unknown") {
       turnstileBody.append("remoteip", ip);
     }
-    const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      body: turnstileBody,
-    });
-    const turnstileJson = (await turnstileRes.json()) as { success?: boolean };
-    if (!turnstileJson.success) {
+    // siteverify は fail-closed: ネットワーク障害 / timeout / 非 2xx / JSON parse 失敗は
+    // すべて検証失敗扱いにし、生エラーを client に漏らさない。
+    let turnstileSuccess = false;
+    try {
+      const turnstileRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          body: turnstileBody,
+          signal: AbortSignal.timeout(5000),
+        },
+      );
+      if (turnstileRes.ok) {
+        const turnstileJson = (await turnstileRes.json()) as { success?: boolean };
+        turnstileSuccess = turnstileJson.success === true;
+      }
+    } catch (err) {
+      console.error("Turnstile siteverify に失敗:", err);
+    }
+    if (!turnstileSuccess) {
       throw new Error("contact_error_turnstile");
     }
 
@@ -57,7 +71,10 @@ export const sendContact = createServerFn({ method: "POST" })
     });
 
     if (error) {
-      throw new Error(`Resend 送信失敗: ${error.message}`);
+      // Resend の内部詳細（未検証ドメイン等）を client に漏らさない。
+      // 詳細はサーバーログに残し、client へは固定の汎用キーを返す。
+      console.error("Resend 送信失敗:", error);
+      throw new Error("contact_error_generic");
     }
 
     return { ok: true } as const;
