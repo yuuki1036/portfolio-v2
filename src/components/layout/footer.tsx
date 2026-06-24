@@ -1,11 +1,11 @@
-import { Github } from "lucide-react";
+import { GithubIcon } from "#/components/ui/github-icon.js";
 import * as m from "#/paraglide/messages/_index.js";
 
 const SOCIAL_LINKS = [
   {
     label: () => m.footer_github_label(),
     href: "https://github.com/yuuki1036",
-    icon: Github,
+    icon: GithubIcon,
   },
   {
     label: () => m.footer_zenn_label(),
