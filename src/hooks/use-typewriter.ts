@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "#/hooks/use-reduced-motion.js";
 
 interface UseTypewriterOptions {
   /** ロール（単語）配列。順次サイクル表示される */
@@ -30,9 +31,16 @@ export function useTypewriter({
   const [text, setText] = useState("");
   const rolesRef = useRef(roles);
   rolesRef.current = roles;
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     if (rolesRef.current.length === 0) return;
+
+    // reduced-motion 時は打鍵ループを張らず、先頭ロールを確定表示する
+    if (reduced) {
+      setText(rolesRef.current[0] ?? "");
+      return;
+    }
 
     let ri = 0;
     let ci = 0;
@@ -64,7 +72,7 @@ export function useTypewriter({
 
     timer = setTimeout(step, startDelay);
     return () => clearTimeout(timer);
-  }, [startDelay, typeSpeed, deleteSpeed, holdDuration]);
+  }, [startDelay, typeSpeed, deleteSpeed, holdDuration, reduced]);
 
   return text;
 }
