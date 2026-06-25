@@ -255,3 +255,31 @@ a {
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
+
+/* ---------- Reduced motion ---------- */
+
+/*
+ * prefers-reduced-motion: reduce では動きを排し、コンテンツを即時可視化する。
+ * fade-up 系（hero-*, name-line, rv）は opacity:0 を起点に animation/transition の
+ * 完了で初めて見えるため、単純な無効化では消えてしまう。よって「演出は瞬間化しつつ
+ * 最終状態は必ず適用」する方針にする。
+ * .rv は IntersectionObserver の .vis 付与に依存するので、発火しない環境
+ * （ヘッドレス fullPage screenshot 等）でも見えるよう最終状態を明示する。
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  /* JS クラス付与に依存する scroll reveal は最終状態を明示 */
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+}
