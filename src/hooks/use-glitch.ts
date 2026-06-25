@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useReducedMotion } from "#/hooks/use-reduced-motion.js";
 
 interface UseGlitchOptions {
   /** 発火間隔 (ms)。デフォルト: 3800 */
@@ -13,8 +14,15 @@ interface UseGlitchOptions {
  */
 export function useGlitch({ interval = 3800, duration = 220 }: UseGlitchOptions = {}) {
   const [on, setOn] = useState(false);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    // reduced-motion 時は interval を張らず、常に off（グリッチを発火させない）
+    if (reduced) {
+      setOn(false);
+      return;
+    }
+
     let durationTimer: ReturnType<typeof setTimeout> | undefined;
     const intervalId = setInterval(() => {
       setOn(true);
@@ -24,7 +32,7 @@ export function useGlitch({ interval = 3800, duration = 220 }: UseGlitchOptions 
       clearInterval(intervalId);
       if (durationTimer !== undefined) clearTimeout(durationTimer);
     };
-  }, [interval, duration]);
+  }, [interval, duration, reduced]);
 
   return on;
 }
