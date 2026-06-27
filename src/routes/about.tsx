@@ -34,7 +34,7 @@ function About() {
                 北陸出身、東京在住のソフトウェアエンジニア。
               </p>
               <p className="font-sans text-[15px] font-light leading-[1.88] text-muted">
-                国内のスタートアップで 6 年以上、TypeScript と React
+                国内のスタートアップで 7 年以上、TypeScript と React
                 を軸にプロダクト開発に携わってきました。設計・パフォーマンス・開発体験の三点が関心領域です。
               </p>
               <p className="font-sans text-[15px] font-light leading-[1.88] text-muted">

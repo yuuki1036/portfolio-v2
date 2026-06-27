@@ -32,7 +32,7 @@ function Home() {
         <div className="hero-glow" aria-hidden="true" />
 
         <p className="hero-eyebrow mb-9 font-mono text-[11px] uppercase tracking-[0.28em] text-muted">
-          Software Engineer × 6 years
+          Software Engineer × 7 years
         </p>
 
         <h1 className="mb-1 font-display text-[clamp(56px,8.5vw,120px)] font-extrabold leading-[0.9] tracking-[-0.03em] text-text">
@@ -54,9 +54,9 @@ function Home() {
           <p className="mt-[14px] max-w-[420px] font-sans text-[15px] font-light leading-[1.85] text-muted">
             TypeScript・React でプロダクト開発を加速させる
             <br />
-            フロントエンドエンジニア。
+            ソフトウェアエンジニア。
             <br />
-            スタートアップの成長を技術で支えます。
+            スタートアップの成長を、技術で支えます。
           </p>
         </div>
 
@@ -108,7 +108,7 @@ function Home() {
                 <em>shipping</em> faster.
               </SectionHeading>
               <p className="mb-4 font-sans text-[15px] font-light leading-[1.88] text-muted">
-                北陸出身。6年以上のフロントエンドエンジニア経験を持ち、スタートアップでのプロダクト開発をリードしてきました。
+                北陸出身、東京在住のソフトウェアエンジニア。7年以上のフロントエンド経験を持ち、スタートアップでのプロダクト開発をリードしてきました。
               </p>
               <p className="mb-4 font-sans text-[15px] font-light leading-[1.88] text-muted">
                 TypeScript・React・Next.js
