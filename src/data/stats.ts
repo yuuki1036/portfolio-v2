@@ -13,7 +13,7 @@ export interface Stat {
 }
 
 export const STATS: readonly Stat[] = [
-  { value: "6", sup: "+", label: "Years Exp." },
+  { value: "7", sup: "+", label: "Years Exp." },
   { value: "20", sup: "+", label: "Projects" },
   { value: "5", sup: "+", label: "Startups" },
   { value: "∞", label: "TS Lines" },
