@@ -9,29 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorksRouteImport } from './routes/works'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as WorksIndexRouteImport } from './routes/works.index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as WorksRouteImport } from './routes/works'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as WorksSlugRouteImport } from './routes/works.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as WorksIndexRouteImport } from './routes/works.index'
+import { Route as WorksSlugRouteImport } from './routes/works.$slug'
 
-const WorksRoute = WorksRouteImport.update({
-  id: '/works',
-  path: '/works',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -39,30 +29,40 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorksIndexRoute = WorksIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => WorksRoute,
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorksRoute = WorksRouteImport.update({
+  id: '/works',
+  path: '/works',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => BlogRoute,
 } as any)
-const WorksSlugRoute = WorksSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => WorksRoute,
-} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
+} as any)
+const WorksIndexRoute = WorksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => WorksRoute,
+} as any)
+const WorksSlugRoute = WorksSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => WorksRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -141,25 +141,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/works': {
-      id: '/works'
-      path: '/works'
-      fullPath: '/works'
-      preLoaderRoute: typeof WorksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -169,19 +155,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/works/': {
-      id: '/works/'
-      path: '/'
-      fullPath: '/works/'
-      preLoaderRoute: typeof WorksIndexRouteImport
-      parentRoute: typeof WorksRoute
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/works': {
+      id: '/works'
+      path: '/works'
+      fullPath: '/works'
+      preLoaderRoute: typeof WorksRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/': {
       id: '/blog/'
@@ -190,19 +183,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof BlogRoute
     }
-    '/works/$slug': {
-      id: '/works/$slug'
-      path: '/$slug'
-      fullPath: '/works/$slug'
-      preLoaderRoute: typeof WorksSlugRouteImport
-      parentRoute: typeof WorksRoute
-    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/works/': {
+      id: '/works/'
+      path: '/'
+      fullPath: '/works/'
+      preLoaderRoute: typeof WorksIndexRouteImport
+      parentRoute: typeof WorksRoute
+    }
+    '/works/$slug': {
+      id: '/works/$slug'
+      path: '/$slug'
+      fullPath: '/works/$slug'
+      preLoaderRoute: typeof WorksSlugRouteImport
+      parentRoute: typeof WorksRoute
     }
   }
 }

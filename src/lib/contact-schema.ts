@@ -7,7 +7,7 @@ import { z } from "zod";
  *   ユーザー入力 4 フィールド (`name`/`email`/`subject`/`message`) のみ validate する。
  *   `honeypot` / `turnstileToken` は UI 上のフィールドとして含むが、client では制約をかけない
  *   （TanStack Form の TFormData と Standard Schema の input 型を一致させるため、`z.string()` で受けるだけ）。
- * - {@link contactServerSchema}: PR2 / PR3 で `createServerFn` の `inputValidator` に渡す厳密版。
+ * - {@link contactServerSchema}: PR2 / PR3 で `createServerFn` の `validator` に渡す厳密版。
  *   `honeypot` は空文字必須、`turnstileToken` は PR3 で `min(1)` を強制する。
  */
 export const contactValidationSchema = z.object({
