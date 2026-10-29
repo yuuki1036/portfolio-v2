@@ -17,3 +17,4 @@ src/paraglide
 playwright-report
 test-results
 blob-report
+.vitest/

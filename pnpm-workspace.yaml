@@ -1,0 +1,18 @@
+onlyBuiltDependencies:
+  - esbuild
+  - lightningcss
+overrides:
+  vite@*: "catalog:"
+  # Security: lift transitive deps out of vulnerable ranges (Dependabot alerts)
+  # tsx < 4.22 pins esbuild ~0.27 (GHSA for esbuild < 0.28.1)
+  "tsx@<4.22.0": ^4.22.0
+  # @tailwindcss/typography pins postcss-selector-parser 6.0.10 (< 6.1.5)
+  "postcss-selector-parser@<6.1.5": ^6.1.5
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
