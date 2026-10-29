@@ -19,7 +19,7 @@ import { checkRateLimit } from "#/lib/rate-limit.server.js";
  * IP は CF-Connecting-IP を優先する（X-Forwarded-For は詐称可能なため rate-limit キーに使わない）。
  */
 export const sendContact = createServerFn({ method: "POST" })
-  .inputValidator(contactServerSchema)
+  .validator(contactServerSchema)
   .handler(async ({ data }) => {
     if (data.honeypot !== "") {
       throw new Error("contact_error_bot");
