@@ -1,6 +1,24 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
+ * contact の loader は server env を検証し、未設定なら 500 を返す。
+ * smoke test はメールを送らないので、未設定の項目だけ .dev.vars.example の
+ * テスト値（Turnstile は常に PASS のテストキー）で埋める。
+ */
+const SMOKE_ENV_DEFAULTS: Record<string, string> = {
+  RESEND_API_KEY: "re_smoke_test_dummy",
+  CONTACT_TO_EMAIL: "you@example.com",
+  CONTACT_FROM_EMAIL: "contact@example.com",
+  TURNSTILE_SITE_KEY: "1x00000000000000000000AA",
+  TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA",
+};
+
+const webServerEnv: Record<string, string> = { ...SMOKE_ENV_DEFAULTS };
+for (const [key, value] of Object.entries(process.env)) {
+  if (value !== undefined) webServerEnv[key] = value;
+}
+
+/**
  * Playwright configuration for portfolio-v2.
  * vp dev を webServer として起動し、localhost:3000 に対してテストを走らせる。
  */
@@ -28,5 +46,6 @@ export default defineConfig({
     timeout: 120_000,
     stdout: "ignore",
     stderr: "pipe",
+    env: webServerEnv,
   },
 });
