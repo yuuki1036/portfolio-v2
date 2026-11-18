@@ -2,9 +2,12 @@ name: Dependabot auto-merge
 
 on: pull_request
 
+# GITHUB_TOKEN は fetch-metadata の読み取りにだけ使う。
+# auto-merge は GitHub App のトークンで有効にする。GITHUB_TOKEN で有効にしたマージは
+# main への push の workflow（ci.yml など）を起こさないため。
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 
 jobs:
   dependabot:
@@ -17,9 +20,19 @@ jobs:
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 
+      # Dependabot が起こした workflow は Dependabot secrets しか読めないので、
+      # AUTO_MERGE_APP_* は Dependabot secrets に置く。
+      - name: Generate GitHub App token
+        if: steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.AUTO_MERGE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.AUTO_MERGE_APP_PRIVATE_KEY }}
+
       - name: Enable auto-merge for minor updates
         if: steps.metadata.outputs.update-type == 'version-update:semver-minor'
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}

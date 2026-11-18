@@ -1,0 +1,44 @@
+name: Dependabot update branch
+
+# main の ruleset は「最新の main を取り込んだ PR だけをマージできる」（strict）設定にしている。
+# Dependabot は衝突しない behind の PR を自分では rebase しないため、
+# main が進むたびに、auto-merge 待ちで behind の Dependabot PR へ main を取り込む。
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  update-branch:
+    runs-on: ubuntu-latest
+    steps:
+      # GITHUB_TOKEN で push すると PR の CI が承認待ちになるので、GitHub App のトークンを使う。
+      # push の workflow は Actions secrets を読むので、AUTO_MERGE_APP_* は Actions secrets にも置く。
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.AUTO_MERGE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.AUTO_MERGE_APP_PRIVATE_KEY }}
+
+      - name: Update behind Dependabot PRs waiting for auto-merge
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          prs=$(gh pr list --base main --author 'app/dependabot' --state open \
+            --json number,autoMergeRequest,mergeStateStatus \
+            --jq '.[] | select(.autoMergeRequest != null and .mergeStateStatus == "BEHIND") | .number')
+          if [ -z "$prs" ]; then
+            echo "behind の Dependabot PR はない"
+            exit 0
+          fi
+          for pr in $prs; do
+            echo "#$pr に main を取り込む"
+            gh pr update-branch "$pr" || echo "::warning::#$pr の update-branch に失敗した（衝突なら Dependabot の rebase か手で直す）"
+          done
